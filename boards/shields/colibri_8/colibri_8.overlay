@@ -1,0 +1,71 @@
+#include <zephyr/dt-bindings/gpio/gpio.h>
+
+&i2c1 {
+	status = "okay";
+
+	/* I2C Multiplexer */
+	tca9548: tca9548a@70 {
+		compatible = "ti,tca9548a";
+		reg = <0x70>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "okay";
+
+		i2c_chan0: i2c@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+		};
+	};
+
+	/* I/O Expander */
+	tca6424: tca6424@22 {
+		compatible = "ti,tca6424a";
+		reg = <0x22>;
+		gpio-controller;
+		#gpio-cells = <2>;
+		status = "okay";
+	};
+
+	/* M24M01 EEPROM (1Mbit) */
+	eeprom0: m24m01@50 {
+		compatible = "atmel,at24";
+		reg = <0x50>;
+		size = <131072>;
+		pagesize = <256>;
+		address-width = <16>;
+		timeout = <5>;
+		status = "okay";
+	};
+
+	/* Texas Instruments HDC2010 temperature/humidity sensor.
+	 * 7-bit I2C address 0x40 (ADDR pin tied low) — adjust to 0x41 if ADDR is high.
+	 */
+	hdc2010: hdc2010@40 {
+		compatible = "ti,hdc20xx";
+		reg = <0x40>;
+		status = "okay";
+	};
+};
+
+&spi1 {
+	status = "okay";
+	/* PB2 is index 0 (Onboard Flash), TCA6424 P20 is index 1 */
+	cs-gpios = <&gpiob 2 GPIO_ACTIVE_LOW>,
+			   <&tca6424 20 GPIO_ACTIVE_LOW>;
+
+	/* Carrier Board Flash */
+	w25q128_carrier: w25q128jv@1 {
+		compatible = "jedec,spi-nor";
+		reg = <1>;
+		spi-max-frequency = <80000000>;
+		size = <0x8000000>;
+		jedec-id = [ef 40 18];
+		status = "okay";
+	};
+};
+
+/* The Colibri 8 has 8 WS2812s. */
+&led_strip {
+	chain-length = <8>;
+};

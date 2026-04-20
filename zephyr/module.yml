@@ -1,0 +1,5 @@
+name: colibri
+build:
+  settings:
+    board_root: .
+    shield_root: .

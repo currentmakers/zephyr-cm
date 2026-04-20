@@ -1,0 +1,6 @@
+board:
+  name: colibri_mcu3
+  full_name: Colibri MCU3
+  vendor: currentmakers
+  socs:
+    - name: stm32f405xx

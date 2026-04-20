@@ -1,0 +1,70 @@
+/dts-v1/;
+#include <st/f4/stm32f407Xe.dtsi>
+#include <st/f4/stm32f407v(e-g)tx-pinctrl.dtsi>
+
+/ {
+	model = "Streamline MCU STM32F407";
+	compatible = "currentmakers,streamline-mcu-stm32f407";
+
+	chosen {
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+
+		zephyr,console = &usart1;
+		zephyr,shell-uart = &usart1;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		user_led: led_0 {
+			gpios = <&gpioc 13 GPIO_ACTIVE_LOW>;
+			label = "User LED";
+		};
+	};
+
+	buttons {
+		compatible = "gpio-keys";
+
+		boot_button: button_0 {
+			gpios = <&gpioc 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "Boot0 Button";
+		};
+	};
+
+	aliases {
+		led0 = &user_led;
+		sw0 = &boot_button;
+	};
+};
+
+/* Configure the External Crystal (HSE) */
+&clk_hse {
+	clock-frequency = <DT_FREQ_M(16)>; /* SET TO YOUR ACTUAL CRYSTAL FREQ */
+	status = "okay";
+};
+
+&pll {
+	div-m = <16>;
+	mul-n = <336>;
+	div-p = <2>;
+	div-q = <7>;
+	clocks = <&clk_hse>;
+	status = "okay";
+};
+
+&rcc {
+	clocks = <&pll>;
+	clock-frequency = <DT_FREQ_M(168)>;
+	ahb-prescaler = <1>;
+	apb1-prescaler = <4>;
+	apb2-prescaler = <2>;
+};
+
+&usart1 {
+	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+

@@ -1,0 +1,144 @@
+/dts-v1/;
+#include <st/f4/stm32f405Xg.dtsi>
+#include <st/f4/stm32f405rgtx-pinctrl.dtsi>
+#include "./colibri_mcu3-pinctrl.dtsi"
+#include <zephyr/dt-bindings/gpio/gpio.h>
+#include <zephyr/dt-bindings/pwm/pwm.h>
+#include <zephyr/dt-bindings/led/led.h>
+#include <zephyr/dt-bindings/i2c/i2c.h>
+
+/ {
+	model = "CurrentMakers MCU3";
+	compatible = "currentmakers,mcu3";
+
+	chosen {
+		/* USART2 is your Debugger/Shell link */
+		zephyr,console = &usart2;
+		zephyr,shell-uart = &usart2;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		green_led: led_0 {
+			gpios = <&gpiob 14 GPIO_ACTIVE_HIGH>;
+			label = "LED1";
+		};
+		red_led: led_1 {
+			gpios = <&gpiob 13 GPIO_ACTIVE_HIGH>;
+			label = "LED2";
+		};
+	};
+
+	aliases {
+		led0 = &green_led;
+		led1 = &red_led;
+	};
+
+	/* WS2812 Strip alias */
+	led_strip: ws2812 {
+		compatible = "worldsemi,ws2812-pwm";
+		chain-length = <16>;
+		color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
+		pwms = <&pwm3 2 1250 PWM_POLARITY_NORMAL>;
+	};
+
+	/* Connector for Carrier Board (Shield) */
+	mcu_connector: mcu-slot-connector {
+		compatible = "gpio-nexus";
+		#gpio-cells = <2>;
+		gpio-map-mask = <0xffffffff 0xffffffff>;
+		gpio-map-pass-thru = <0 0>;
+		gpio-map = <1 0 &gpiob 8 0>,  /* AUX1 */
+				   <2 0 &gpiob 10 0>, /* AUX2 */
+				   <3 0 &gpiob 12 0>, /* AUX3 */
+				   <4 0 &gpiob 15 0>, /* AUX4 */
+				   <5 0 &gpioa 15 0>; /* IO_RST */
+	};
+
+	aliases {
+		led0 = &green_led;
+		led1 = &red_led;
+		led-strip = &led_strip;
+		bootloader-led0 = &green_led;
+	};
+};
+
+/* Clock Configuration  */
+&clk_hse {
+	clock-frequency = <DT_FREQ_M(16)>;
+	status = "okay";
+};
+
+&pll {
+	div-m = <8>;
+	mul-n = <72>;
+	div-p = <2>;
+	div-q = <3>;
+	clocks = <&clk_hse>;
+	status = "okay";
+};
+
+&rcc {
+	clocks = <&pll>;
+	clock-frequency = <DT_FREQ_M(72)>;
+	ahb-prescaler = <1>;
+	apb1-prescaler = <2>;
+	apb2-prescaler = <1>;
+};
+
+/* I2C1: Carrier Bus (configured here so the shield can extend it) */
+&i2c1 {
+	pinctrl-0 = <&i2c1_scl_pb6 &i2c1_sda_pb7>;
+	pinctrl-names = "default";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+	status = "okay";
+};
+
+/* USART1: Reserved for Carrier Board (e.g., Modbus/RS-485) */
+&usart1 {
+	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
+	pinctrl-names = "default";
+	current-speed = <921600>;
+	status = "okay";
+};
+
+/* USART2: Dedicated for Debugging */
+&usart2 {
+	pinctrl-0 = <&usart2_tx_pa2 &usart2_rx_pa3>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+
+&spi1 {
+	pinctrl-0 = <&spi1_sck_pa5 &spi1_miso_pa6 &spi1_mosi_pa7>;
+	pinctrl-names = "default";
+	status = "okay";
+	cs-gpios = <&gpiob 2 GPIO_ACTIVE_LOW>;
+
+	w25q128: w25q128jv@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <80000000>;
+		size = <0x8000000>; /* 128Mbit */
+		jedec-id = [ef 40 18];
+		status = "okay";
+	};
+};
+
+&timers3 {
+	status = "okay";
+	pwm3: pwm {
+		status = "okay";
+		pinctrl-0 = <&tim3_ch2_pb5>;
+		pinctrl-names = "default";
+	};
+};
+
+&usbotg_fs {
+	pinctrl-0 = <&usb_otg_fs_dm_pa11 &usb_otg_fs_dp_pa12>;
+	pinctrl-names = "default";
+	status = "okay";
+};

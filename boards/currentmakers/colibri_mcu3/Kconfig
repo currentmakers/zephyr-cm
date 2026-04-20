@@ -1,0 +1,40 @@
+if BOARD_COLIBRI_MCU3
+
+# Enable the Clock and GPIO drivers required for STM32
+config GPIO
+    default y
+
+config CLOCK_CONTROL
+    default y
+
+config I2C
+    default y
+
+# Enable SPI and FLASH drivers so the W25Q128 works out of the box
+config SPI
+    default y
+
+config FLASH
+    default y
+
+config SPI_NOR
+    default y
+
+# Enable PWM and LED Strip drivers for the WS2812
+config PWM
+    default y
+
+config LED_STRIP
+    default y
+
+config SERIAL
+    default y
+
+config UART_INTERRUPT_DRIVEN
+    default y
+
+# Often used with the shell for debugging
+config UART_CONSOLE
+    default y
+
+endif
