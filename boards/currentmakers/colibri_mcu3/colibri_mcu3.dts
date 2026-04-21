@@ -56,13 +56,6 @@
 				   <4 0 &gpiob 15 0>, /* AUX4 */
 				   <5 0 &gpioa 15 0>; /* IO_RST */
 	};
-
-	aliases {
-		led0 = &green_led;
-		led1 = &red_led;
-		led-strip = &led_strip;
-		bootloader-led0 = &green_led;
-	};
 };
 
 /* Clock Configuration  */
