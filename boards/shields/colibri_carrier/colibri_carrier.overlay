@@ -98,44 +98,51 @@
 	};
 
 	/* Power and Reset control for slots */
-	slot_ctrl {
+	slot_ctrl_pwr: slot-ctrl-pwr {
 		compatible = "gpio-leds";
-		slot1_pwr: slot1_pwr { gpios = <&tca6424 1 GPIO_ACTIVE_HIGH>; label = "Slot 1 Power"; };
-		slot2_pwr: slot2_pwr { gpios = <&tca6424 2 GPIO_ACTIVE_HIGH>; label = "Slot 2 Power"; };
-		slot3_pwr: slot3_pwr { gpios = <&tca6424 3 GPIO_ACTIVE_HIGH>; label = "Slot 3 Power"; };
-		slot4_pwr: slot4_pwr { gpios = <&tca6424 4 GPIO_ACTIVE_HIGH>; label = "Slot 4 Power"; };
-		slot5_pwr: slot5_pwr { gpios = <&tca6424 5 GPIO_ACTIVE_HIGH>; label = "Slot 5 Power"; };
-		slot6_pwr: slot6_pwr { gpios = <&tca6424 6 GPIO_ACTIVE_HIGH>; label = "Slot 6 Power"; };
-		slot7_pwr: slot7_pwr { gpios = <&tca6424 7 GPIO_ACTIVE_HIGH>; label = "Slot 7 Power"; };
 
-		slot1_rst: slot1_rst { gpios = <&tca6424 9 GPIO_ACTIVE_LOW>; label = "Slot 1 Reset"; };
-		slot2_rst: slot2_rst { gpios = <&tca6424 10 GPIO_ACTIVE_LOW>; label = "Slot 2 Reset"; };
-		slot3_rst: slot3_rst { gpios = <&tca6424 11 GPIO_ACTIVE_LOW>; label = "Slot 3 Reset"; };
-		slot4_rst: slot4_rst { gpios = <&tca6424 12 GPIO_ACTIVE_LOW>; label = "Slot 4 Reset"; };
-		slot5_rst: slot5_rst { gpios = <&tca6424 13 GPIO_ACTIVE_LOW>; label = "Slot 5 Reset"; };
-		slot6_rst: slot6_rst { gpios = <&tca6424 14 GPIO_ACTIVE_LOW>; label = "Slot 6 Reset"; };
-		slot7_rst: slot7_rst { gpios = <&tca6424 15 GPIO_ACTIVE_LOW>; label = "Slot 7 Reset"; };
+		/* Each pin must be a child node for this compatible */
+		pwr0: pwr_0 {gpios = <&tca6424 0 GPIO_ACTIVE_HIGH>;};
+		pwr1: pwr_1 {gpios = <&tca6424 1 GPIO_ACTIVE_HIGH>;};
+		pwr2: pwr_2 {gpios = <&tca6424 2 GPIO_ACTIVE_HIGH>;};
+		pwr3: pwr_3 {gpios = <&tca6424 3 GPIO_ACTIVE_HIGH>;};
+		pwr4: pwr_4 {gpios = <&tca6424 4 GPIO_ACTIVE_HIGH>;};
+		pwr5: pwr_5 {gpios = <&tca6424 5 GPIO_ACTIVE_HIGH>;};
+		pwr6: pwr_6 {gpios = <&tca6424 6 GPIO_ACTIVE_HIGH>;};
+		pwr7: pwr_7 {gpios = <&tca6424 7 GPIO_ACTIVE_HIGH>;};
+	};
+
+	slot_ctrl_rst: slot-ctrl-rst {
+		compatible = "gpio-leds";
+		rst0: rst_0 {gpios = <&tca6424 8 GPIO_ACTIVE_LOW>;};
+		rst1: rst_1 {gpios = <&tca6424 9 GPIO_ACTIVE_LOW>;};
+		rst2: rst_2 {gpios = <&tca6424 10 GPIO_ACTIVE_LOW>;};
+		rst3: rst_3 {gpios = <&tca6424 11 GPIO_ACTIVE_LOW>;};
+		rst4: rst_4 {gpios = <&tca6424 12 GPIO_ACTIVE_LOW>;};
+		rst5: rst_5 {gpios = <&tca6424 13 GPIO_ACTIVE_LOW>;};
+		rst6: rst_6 {gpios = <&tca6424 14 GPIO_ACTIVE_LOW>;};
+		rst7: rst_7 {gpios = <&tca6424 15 GPIO_ACTIVE_LOW>;};
 	};
 
 	/* LED_STATUS on PB5 (TIM3_CH2) driven as WS2812B via PWM + DMA. */
-		led_strip: ws2812 {
+	led_strip: ws2812 {
 		compatible = "worldsemi,ws2812-pwm";
 		chain-length = <8>;
 		color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
 		pwms = <&pwm3 2 PWM_NSEC(1250) PWM_POLARITY_INVERTED>;
 		dmas = <&dma1 2 5
-			(STM32_DMA_MEMORY_TO_PERIPH |
-			 STM32_DMA_MEM_INC |
-			 STM32_DMA_PERIPH_NO_INC |
-			 STM32_DMA_PRIORITY_HIGH)
-			0>;
+				(STM32_DMA_MEMORY_TO_PERIPH |
+				STM32_DMA_MEM_INC |
+				STM32_DMA_PERIPH_NO_INC |
+				STM32_DMA_PRIORITY_HIGH)
+				0>;
 		dma-names = "update";
 	};
 };
 
 &spi1 {
 	status = "okay";
-	/* PB2 is index 0 (Onboard Flash), 
+	/* PB2 is index 0 (Onboard Flash),
 	 * TCA6424 P20 is index 1 (Carrier Board Flash),
 	 * TCA6424 P21..P27 is index 2..8 (Slots 1..7)
 	 * In Zephyr, TC6424A gpio numbers are linear 0..23
@@ -151,12 +158,12 @@
 			   <&tca6424 23 GPIO_ACTIVE_LOW>;
 
 	/* Carrier Board Flash */
-	w25q128_carrier: w25q128jv@1 {
-		compatible = "jedec,spi-nor";
-		reg = <1>;
-		spi-max-frequency = <80000000>;
-		size = <0x8000000>;
-		jedec-id = [ef 40 18];
-		status = "okay";
-	};
+		w25q128_carrier: w25q128jv@1 {
+			compatible = "jedec,spi-nor";
+			reg = <1>;
+			spi-max-frequency = <1000000>;
+			size = <0x8000000>;
+			jedec-id = [ef 40 18];
+			status = "okay";
+		};
 };

@@ -1,2 +1,0 @@
-config SHIELD_COLIBRI_3A
-    def_bool $(shields_list_contains,colibri_3a)

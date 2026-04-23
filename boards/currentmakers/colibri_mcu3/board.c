@@ -23,7 +23,7 @@ static int colibri_mcu3_board_init(void)
 
 	/* PA15: Release reset on the carrier board */
 	gpio_pin_configure(gpioa, 15, GPIO_OUTPUT_HIGH);
-
+	printk("IO_RESET released\n");
 	return 0;
 }
 
