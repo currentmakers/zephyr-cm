@@ -95,6 +95,7 @@
 / {
 	aliases {
 		led-strip = &led_strip;
+		storage-partition = &storage_partition;
 	};
 
 	/* Power and Reset control for slots */
@@ -166,4 +167,22 @@
 			jedec-id = [ef 40 18];
 			status = "okay";
 		};
+};
+
+&w25q128_carrier {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		storage_partition: partition@0 {  // 15.4MB of LittleFS
+		label = "storage_carrier";
+			reg = <0x00000000 0x00FE0000>;
+		};
+
+		settings_carrier_partition: partition@ff0000 {  // 2x64kB for NVS settings.
+		label = "settings_carrier";
+			reg = <0x00FE0000 0x00020000>;
+		};
+	};
 };

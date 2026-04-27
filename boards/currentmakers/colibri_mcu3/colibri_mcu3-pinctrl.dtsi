@@ -1,6 +1,14 @@
 #include <zephyr/dt-bindings/pinctrl/stm32-pinctrl.h>
 
 &pinctrl {
+	/* USART1: Main comms Pins */
+	usart1_tx_pa9: usart1_tx_pa9 {
+		pinmux = <STM32_PINMUX('A', 9, AF7)>;
+	};
+	usart1_rx_pa10: usart1_rx_pa10 {
+		pinmux = <STM32_PINMUX('A', 10, AF7)>;
+	};
+
 	/* USART2: Debugger Pins */
 	usart2_tx_pa2: usart2_tx_pa2 {
 		pinmux = <STM32_PINMUX('A', 2, AF7)>;
