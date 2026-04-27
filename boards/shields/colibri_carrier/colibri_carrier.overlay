@@ -95,7 +95,7 @@
 / {
 	aliases {
 		led-strip = &led_strip;
-		storage-partition = &storage_partition;
+		storage-carrier-partition = &storage_carrier_partition;
 	};
 
 	/* Power and Reset control for slots */
