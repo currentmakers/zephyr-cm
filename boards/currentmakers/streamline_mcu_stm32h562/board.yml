@@ -1,0 +1,6 @@
+board:
+  name: streamline_mcu_stm32h562
+  full_name: Streamline MCU STM32H562
+  vendor: currentmakers
+  socs:
+    - name: stm32c5x

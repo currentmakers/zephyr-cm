@@ -1,9 +1,9 @@
 /dts-v1/;
-#include <st/f4/stm32f407Xe.dtsi>
+#include <st/l4/stm32l475Xe.dtsi>
 
 / {
-	model = "Streamline MCU STM32F407";
-	compatible = "currentmakers,streamline-mcu-stm32f407";
+	model = "Streamline MCU STM32L475";
+	compatible = "currentmakers,streamline-mcu-stm32l475";
 
 	chosen {
 		zephyr,sram = &sram0;
@@ -44,8 +44,17 @@
 };
 
 &pll {
-	div-m = <16>;
-	mul-n = <336>;
+	div-m = <1>;
+	mul-n = <10>;
+	div-p = <2>;
+	div-q = <2>;
+	clocks = <&clk_hse>;
+	status = "okay";
+};
+
+&pllsai1 {
+	div-m = <1>;
+	mul-n = <160>;
 	div-p = <2>;
 	div-q = <7>;
 	clocks = <&clk_hse>;
@@ -54,10 +63,10 @@
 
 &rcc {
 	clocks = <&pll>;
-	clock-frequency = <DT_FREQ_M(168)>;
+	clock-frequency = <DT_FREQ_M(80)>;
 	ahb-prescaler = <1>;
-	apb1-prescaler = <4>;
-	apb2-prescaler = <2>;
+	apb1-prescaler = <1>;
+	apb2-prescaler = <1>;
 };
 
 &usart1 {

@@ -1,0 +1,6 @@
+board:
+  name: streamline_mcu_stm32l475
+  full_name: Streamline MCU STM32L475
+  vendor: currentmakers
+  socs:
+    - name: stm32l4x
