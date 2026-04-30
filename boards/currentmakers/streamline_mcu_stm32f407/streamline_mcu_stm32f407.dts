@@ -1,5 +1,6 @@
 /dts-v1/;
 #include <st/f4/stm32f407Xe.dtsi>
+#include "streamline_mcu_stm32f407-pinctrl.dtsi"
 
 / {
 	model = "Streamline MCU STM32F407";
