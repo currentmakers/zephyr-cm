@@ -1,12 +1,13 @@
 /dts-v1/;
 #include <st/h5/stm32h562Xg.dtsi>
+#include "streamline_mcu_stm32h562-pinctrl.dtsi"
 
 / {
 	model = "Streamline MCU STM32H562";
 	compatible = "currentmakers,streamline-mcu-stm32h562";
 
 	chosen {
-		zephyr,sram = &sram0;
+		zephyr,sram = &sram1;
 		zephyr,flash = &flash0;
 
 		zephyr,console = &usart1;
@@ -48,6 +49,7 @@
 	mul-n = <480>;
 	div-p = <2>;
 	div-q = <5>;
+	div-r = <5>;
 	clocks = <&clk_hse>;
 	status = "okay";
 };
@@ -58,6 +60,7 @@
 	ahb-prescaler = <1>;
 	apb1-prescaler = <1>;
 	apb2-prescaler = <1>;
+	apb3-prescaler = <1>;
 };
 
 &usart1 {
