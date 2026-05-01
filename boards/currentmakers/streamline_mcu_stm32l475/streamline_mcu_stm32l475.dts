@@ -1,5 +1,6 @@
 /dts-v1/;
 #include <st/l4/stm32l475Xe.dtsi>
+#include "streamline_mcu_stm32l475-pinctrl.dtsi"
 
 / {
 	model = "Streamline MCU STM32L475";
@@ -56,7 +57,7 @@
 	div-m = <1>;
 	mul-n = <160>;
 	div-p = <2>;
-	div-q = <7>;
+	div-q = <6>;
 	clocks = <&clk_hse>;
 	status = "okay";
 };

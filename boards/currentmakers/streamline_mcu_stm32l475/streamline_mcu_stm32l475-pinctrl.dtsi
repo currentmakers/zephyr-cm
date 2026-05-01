@@ -17,7 +17,6 @@
 		pinmux = <STM32_PINMUX('A', 3, AF7)>;
 	};
 
-
 	/* USB OTG FS */
 	usb_otg_fs_dm_pa11: usb_otg_fs_dm_pa11 {
 		pinmux = <STM32_PINMUX('A', 11, AF10)>;

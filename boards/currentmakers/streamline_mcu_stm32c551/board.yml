@@ -3,4 +3,4 @@ board:
   full_name: Streamline MCU STM32C551
   vendor: currentmakers
   socs:
-    - name: stm32c5x
+    - name: stm32c551xx
