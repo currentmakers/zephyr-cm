@@ -1,12 +1,13 @@
 /dts-v1/;
 #include <st/c5/stm32c551.dtsi>
+#include "streamline_mcu_stm32c551-pinctrl.dtsi"
 
 / {
 	model = "Streamline MCU STM32C551";
 	compatible = "currentmakers,streamline-mcu-stm32c551";
 
 	chosen {
-		zephyr,sram = &sram0;
+		zephyr,sram = &sram1;
 		zephyr,flash = &flash0;
 
 		zephyr,console = &usart1;
@@ -37,27 +38,29 @@
 	};
 };
 
+// The sram declaration below might very well be a bug in Zephyr. Should belong in the SOC.
+&sram1 {
+	reg = <0x20000000 0x10000>; // We might be able to increase that to 128kB, as I think the two memory blocks are contiguous
+};
+
+&flash0 {
+	reg = <0x08000000 0x80000>; /* 128KB - Adjust to your chip's actual size */
+};
+
 /* Configure the External Crystal (HSE) */
 &clk_hse {
 	clock-frequency = <DT_FREQ_M(16)>; /* SET TO YOUR ACTUAL CRYSTAL FREQ */
 	status = "okay";
 };
 
-&pll {
-	div-m = <16>;
-	mul-n = <288>;
-	div-p = <2>;
-	div-q = <6>;
-	clocks = <&clk_hse>;
+&clk_hsis {
 	status = "okay";
 };
 
 &rcc {
-	clocks = <&pll>;
+	clocks = <&clk_hsis>;
 	clock-frequency = <DT_FREQ_M(144)>;
-	ahb1-prescaler = <1>;
-	ahb2-prescaler = <1>;
-	ahb3-prescaler = <1>;
+	ahb-prescaler = <1>;
 	apb1-prescaler = <1>;
 	apb2-prescaler = <1>;
 	apb3-prescaler = <1>;
