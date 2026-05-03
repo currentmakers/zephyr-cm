@@ -1,0 +1,6 @@
+board:
+  name: streamline_mcu_rp2354
+  full_name: Streamline MCU RP2354
+  vendor: currentmakers
+  socs:
+    - name: rp2350

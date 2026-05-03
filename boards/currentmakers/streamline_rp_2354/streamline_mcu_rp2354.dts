@@ -1,17 +1,17 @@
 /dts-v1/;
-#include <st/h5/stm32h562Xg.dtsi>
-#include "streamline_mcu_stm32h562-pinctrl.dtsi"
+#include <raspberrypi/rpi_pico/rp2350b.dtsi>
+#include "streamline_mcu_rp2354-pinctrl.dtsi"
 
 / {
-	model = "Streamline MCU STM32H562";
-	compatible = "currentmakers,streamline-mcu-stm32h562";
+	model = "Streamline MCU RP2354";
+	compatible = "currentmakers,streamline-mcu-rp2354";
 
 	chosen {
-		zephyr,sram = &sram1;
+		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
 
-		zephyr,console = &usart2;
-		zephyr,shell-uart = &usart2;
+		zephyr,console = &usart1;
+		zephyr,shell-uart = &usart1;
 	};
 
 	leds {
@@ -38,6 +38,10 @@
 	};
 };
 
+&flash0 {
+	reg = <0x10000000 0x20000>;
+};
+
 /* Configure the External Crystal (HSE) */
 &clk_hse {
 	clock-frequency = <DT_FREQ_M(16)>; /* SET TO YOUR ACTUAL CRYSTAL FREQ */
@@ -45,33 +49,33 @@
 };
 
 &pll {
-	div-m = <16>;
-	mul-n = <480>;
-	div-p = <2>;
-	div-q = <5>;
-	div-r = <5>;
+	div-m = <1>;
+	mul-n = <10>;
+	div-p = <7>;
+	div-q = <2>;
+	clocks = <&clk_hse>;
+	status = "okay";
+};
+
+&pllsai1 {
+	div-m = <1>;
+	mul-n = <160>;
+	div-p = <7>;
+	div-q = <6>;
 	clocks = <&clk_hse>;
 	status = "okay";
 };
 
 &rcc {
 	clocks = <&pll>;
-	clock-frequency = <DT_FREQ_M(250)>;
+	clock-frequency = <DT_FREQ_M(80)>;
 	ahb-prescaler = <1>;
 	apb1-prescaler = <1>;
 	apb2-prescaler = <1>;
-	apb3-prescaler = <1>;
 };
 
 &usart1 {
 	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
-	pinctrl-names = "default";
-	current-speed = <921600>;
-	status = "okay";
-};
-
-&usart2 {
-	pinctrl-0 = <&usart2_tx_pa2 &usart2_rx_pa3>;
 	pinctrl-names = "default";
 	current-speed = <921600>;
 	status = "okay";

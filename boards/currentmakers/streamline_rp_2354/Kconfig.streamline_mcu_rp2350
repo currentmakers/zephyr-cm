@@ -1,0 +1,3 @@
+config BOARD_STREAMLINE_MCU_RP2354
+	bool "Streamline MCU RP2354"
+	select SOC_RP2350
