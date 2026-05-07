@@ -1,0 +1,2 @@
+config BOARD_COLIBRI_MCU2
+    select SOC_STM32H562XX
