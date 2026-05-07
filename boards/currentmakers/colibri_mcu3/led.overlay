@@ -1,0 +1,15 @@
+#include <zephyr/dt-bindings/dma/stm32_dma.h>
+
+&led_strip {
+		/* bind the node*/
+		compatible = "worldsemi,ws2812-pwm";
+		pwms = <&pwm3 2 PWM_NSEC(1250) PWM_POLARITY_INVERTED>;
+		dmas = <&dma1 2 5
+				(STM32_DMA_MEMORY_TO_PERIPH |
+				STM32_DMA_MEM_INC |
+				STM32_DMA_PERIPH_NO_INC |
+				STM32_DMA_PRIORITY_HIGH)
+				0>;
+		dma-names = "update";
+		status = "okay";
+};
