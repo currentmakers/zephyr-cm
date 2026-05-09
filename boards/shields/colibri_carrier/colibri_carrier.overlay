@@ -53,7 +53,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom1: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
@@ -69,7 +69,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom2: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
@@ -85,7 +85,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom3: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
@@ -101,7 +101,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom4: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
@@ -117,7 +117,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom5: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
@@ -133,7 +133,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom6: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
@@ -149,7 +149,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			/* M24M01 EEPROM (1Mbit) */
-			eeprom0: m24m01@50 {
+			eeprom7: m24m01@50 {
 				compatible = "atmel,at24";
 				reg = <0x50>;
 				size = <131072>;
