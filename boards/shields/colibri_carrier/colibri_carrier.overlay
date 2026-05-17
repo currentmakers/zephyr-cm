@@ -160,6 +160,21 @@
 			};
 		};
 	};
+
+	/*
+	 * Two select lines shared by all slots. Combined, they form a
+	 * 2-bit address that decodes (on the I/O module) into one of up
+	 * to four SPI sub-devices behind the slot's own chip-select on
+	 * spi1. Bit 0 is `slot_spi_sel0`, bit 1 is `slot_spi_sel1`.
+	 *
+	 * They must be driven *before* the spi1 transfer starts, because
+	 * spi1 asserts the slot CS during the transfer.
+	 */
+	slot_spi_sel: slot-spi-sel {
+		compatible = "gpio-leds";
+		slot_spi_sel0: sel0 { gpios = <&gpioa 4 GPIO_ACTIVE_LOW>; };
+		slot_spi_sel1: sel1 { gpios = <&gpioa 8 GPIO_ACTIVE_LOW>; };
+	};
 };
 
 / {
