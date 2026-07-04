@@ -17,6 +17,7 @@
 		zephyr,sram = &sram0;
 		zephyr,dtcm = &ccm0;
 		zephyr,flash = &flash0;
+		zephyr,uart-mcumgr = &cdc_acm_uart0;
 	};
 
 	leds {
@@ -36,6 +37,7 @@
 	aliases {
 		led0 = &green_led;
 		led1 = &red_led;
+		storage-mcu-partition = &storage_mcu_partition;
 	};
 
 	/* AUX pins for Carrier Board (Shield) */
@@ -59,6 +61,20 @@
 		bit2: bit_2 { gpios = <&gpioc 6 GPIO_ACTIVE_HIGH>; };
 		bit3: bit_3 { gpios = <&gpioc 7 GPIO_ACTIVE_HIGH>; };
 		bit4: bit_4 { gpios = <&gpioc 9 GPIO_ACTIVE_HIGH>; };
+	};
+	fstab_mcu {
+		compatible = "zephyr,fstab";
+		lfs_mcu: lfs_mcu {
+			compatible = "zephyr,fstab,littlefs";
+			read-size = <32>;
+			prog-size = <32>;
+			cache-size = <256>;
+			lookahead-size = <64>;
+			block-cycles = <512>;
+			partition = <&storage_mcu_partition>;
+			mount-point = "/mcu";
+			automount;
+		};
 	};
 };
 
@@ -127,6 +143,24 @@
 	};
 };
 
+&w25q128_mcu {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		storage_mcu_partition: partition@0 {  // 15.4MB of LittleFS
+		label = "storage_carrier";
+			reg = <0x00000000 0x00FE0000>;
+		};
+
+		settings_mcu_partition: partition@fe0000 {  // 2x64kB for NVS settings.
+		label = "settings_carrier";
+			reg = <0x00FE0000 0x00020000>;
+		};
+	};
+};
+
 &timers3 {
 	status = "okay";
 
@@ -141,8 +175,15 @@
 	status = "okay";
 };
 
+/* Enable the hardware peripheral and link the pins */
 &usbotg_fs {
+	status = "okay";
 	pinctrl-0 = <&usb_otg_fs_dm_pa11 &usb_otg_fs_dp_pa12>;
 	pinctrl-names = "default";
-	status = "okay";
+
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+		hw-flow-control;
+		status = "okay";
+	};
 };
